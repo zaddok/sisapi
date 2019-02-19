@@ -34,14 +34,6 @@ func TestPersonModule(t *testing.T) {
 
 }
 
-type PrintSisLogger struct {
-}
-
-func (ml *PrintSisLogger) Debug(message string, items ...interface{}) error {
-	fmt.Printf(message+"\n", items...)
-	return nil
-}
-
 func requireEnv(name string, t *testing.T) string {
 	value := os.Getenv(name)
 	if value == "" {

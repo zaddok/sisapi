@@ -214,3 +214,11 @@ func (m *SisApi) AddPersonToGroup(personUuid string, group string, intakeYear in
 func (m *SisApi) SetUrlFetcher(fetch LookupUrl) {
 	m.fetch = fetch
 }
+
+type PrintSisLogger struct {
+}
+
+func (ml *PrintSisLogger) Debug(message string, items ...interface{}) error {
+	fmt.Printf(message+"\n", items...)
+	return nil
+}
