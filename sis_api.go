@@ -166,7 +166,7 @@ func (m *SisApi) GetPersonByEmail(email string) (*Person, error) {
 }
 
 func (m *SisApi) RemovePersonFromGroup(personUuid, group string, intakeYear int, intakeSemester string) error {
-	url := fmt.Sprintf("%sapi/group.remove?token=%s&person=%s&group=%s&year=%d&semester=%s", m.base, m.token, personUuid, group, intakeYear, intakeSemester)
+	url := fmt.Sprintf("%sapi/group.remove?token=%s&person=%s&group=%s&year=%d&semester=%s", m.base, m.token, personUuid, url.QueryEscape(group), intakeYear, intakeSemester)
 	m.log.Debug("Fetch: %s", url)
 
 	body, _, _, err := m.fetch.GetUrl(url)
@@ -189,7 +189,7 @@ func (m *SisApi) RemovePersonFromGroup(personUuid, group string, intakeYear int,
 }
 
 func (m *SisApi) AddPersonToGroup(personUuid string, group string, intakeYear int, intakeSemester string) error {
-	url := fmt.Sprintf("%sapi/group.add?token=%s&group=%s&year=%d&semester=%s", m.base, m.token, group, intakeYear, intakeSemester)
+	url := fmt.Sprintf("%sapi/group.add?token=%s&group=%s&year=%d&semester=%s", m.base, m.token, url.QueryEscape(group), intakeYear, intakeSemester)
 	m.log.Debug("Fetch: %s", url)
 
 	body, _, _, err := m.fetch.GetUrl(url)

@@ -13,7 +13,7 @@ func TestPersonModule(t *testing.T) {
 
 	err := api.Authenticate()
 	if err != nil {
-		fmt.Printf("%v", err)
+		fmt.Printf("Authentication error: %v", err)
 		return
 	}
 
