@@ -16,7 +16,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"strings"
 )
 
 // API Documentation
@@ -149,7 +148,6 @@ func (m *SisApi) GetPersonByEmail(email string) (*Person, error) {
 	}
 
 	var result Person
-
 	if err := json.Unmarshal([]byte(body), &result); err != nil {
 		return nil, errors.New("Server returned unexpected response. " + err.Error())
 	}
@@ -174,18 +172,21 @@ func (m *SisApi) RemovePersonFromGroup(personUuid, group string, intakeYear int,
 		return err
 	}
 
-	type SiteInfo struct {
-		Sitename  string
-		Firstname string
-		Lastname  string
-		Error     string
+	type Response struct {
+		Success string
+		Error   string
 	}
 
-	if strings.TrimSpace(body) != "null" {
-		return errors.New("Server returned unexpected response: " + body + "--" + url)
+	var result Response
+	if err := json.Unmarshal([]byte(body), &result); err != nil {
+		return errors.New("Server returned unexpected response. " + err.Error())
 	}
 
-	return nil
+	if result.Success != "" {
+		return nil
+	}
+
+	return errors.New(result.Error)
 }
 
 func (m *SisApi) AddPersonToGroup(personUuid string, group string, intakeYear int, intakeSemester string) error {
@@ -197,18 +198,21 @@ func (m *SisApi) AddPersonToGroup(personUuid string, group string, intakeYear in
 		return err
 	}
 
-	type SiteInfo struct {
-		Sitename  string
-		Firstname string
-		Lastname  string
-		Error     string
+	type Response struct {
+		Success string
+		Error   string
 	}
 
-	if strings.TrimSpace(body) != "null" {
-		return errors.New("Server returned unexpected response: " + body + "--" + url)
+	var result Response
+	if err := json.Unmarshal([]byte(body), &result); err != nil {
+		return errors.New("Server returned unexpected response. " + err.Error())
 	}
 
-	return nil
+	if result.Success != "" {
+		return nil
+	}
+
+	return errors.New(result.Error)
 }
 
 func (m *SisApi) SetUrlFetcher(fetch LookupUrl) {
